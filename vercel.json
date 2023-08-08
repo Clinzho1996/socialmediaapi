@@ -11,10 +11,5 @@
       "src": "/(.*)",
       "dest": "/"
     }
-  ],
-  "functions": {
-    "app.js": {
-      "runtime": "nodejs14.x"
-    }
-  }
+  ]
 }
