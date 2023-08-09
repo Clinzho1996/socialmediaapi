@@ -19,7 +19,7 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    app.listen(process.env.PORT, () => {
+    app.listen(3000 || process.env.PORT, () => {
       console.log("App is running on http://localhost:3000");
     });
   })
