@@ -1,15 +1,15 @@
 import express from "express";
 import mongoose from "mongoose";
+import * as dotenv from "dotenv";
+import blogRoutes from "./routes/blog-routes";
 import router from "./routes/user-routes";
-import blogRouter from "./routes/blog-routes";
-import { config } from "dotenv";
 
-config();
+dotenv.config();
 
 const app = express();
 app.use(express.json());
 app.use("/api/user", router);
-app.use("/api/blog", blogRouter);
+app.use("/api/blog", blogRoutes);
 
 const mongoUri = process.env.MONGODB_API;
 
@@ -19,7 +19,7 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    app.listen(process.env.PORT || 3000, () => {
+    app.listen(process.env.PORT, () => {
       console.log("App is running on http://localhost:3000");
     });
   })
