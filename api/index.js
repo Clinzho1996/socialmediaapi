@@ -19,7 +19,7 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    app.listen(3000 || process.env.PORT, () => {
+    app.listen("https://socialmediaapi-red.vercel.app/", () => {
       console.log("App is running on http://localhost:3000");
     });
   })
