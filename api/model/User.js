@@ -17,6 +17,9 @@ const userSchema = new Schema({
     required: true,
     minlength: 6,
   },
+  image: {
+    type: String,
+  },
   blogs: [
     {
       type: mongoose.Types.ObjectId,
