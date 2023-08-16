@@ -3,11 +3,14 @@ import mongoose from "mongoose";
 import * as dotenv from "dotenv";
 import blogRoutes from "./routes/blog-routes";
 import router from "./routes/user-routes";
+import cors from "cors";
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
+
+app.use(cors());
 app.use("/api/user", router);
 app.use("/api/blog", blogRoutes);
 
@@ -19,7 +22,7 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    app.listen(process.env.PORT, () => {
+    app.listen(process.env.PORT || 3000, () => {
       console.log("App is running on http://localhost:3000");
     });
   })
