@@ -48,7 +48,7 @@ export const signup = async (req, res, next) => {
       name,
       email,
       password: hashedPassword,
-      image: uploadResult.secure_url,
+      image: [],
       blogs: [],
     });
 
