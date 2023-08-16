@@ -48,7 +48,6 @@ export const signup = async (req, res, next) => {
       name,
       email,
       password: hashedPassword,
-      image: uploadResult.secure_url,
       blogs: [],
     });
 
@@ -83,6 +82,24 @@ export const login = async (req, res, next) => {
     } else {
       return res.status(200).json({ message: "Login Successful" });
     }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const getUserById = async (req, res, next) => {
+  const userId = req.params.id;
+  console.log("Fetching user with ID:", userId);
+
+  try {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.status(200).json({ user });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Server error" });
