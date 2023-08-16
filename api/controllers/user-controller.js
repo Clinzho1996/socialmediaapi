@@ -6,6 +6,7 @@ import fs from "fs/promises";
 import os from "os";
 import dotenv from "dotenv";
 import { v2 as cloudinary } from "cloudinary";
+import { generateToken, verifyToken } from "../utils/jwUtils";
 
 dotenv.config();
 
@@ -53,6 +54,8 @@ export const signup = async (req, res, next) => {
 
     try {
       await user.save();
+      const token = generateToken({ userId: user._id });
+      return res.status(201).json({ user, token });
     } catch (error) {
       console.log(error);
     }
@@ -80,7 +83,8 @@ export const login = async (req, res, next) => {
     if (!isPasswordCorrect) {
       return res.status(400).json({ message: "Incorrect Password" });
     } else {
-      return res.status(200).json({ message: "Login Successful" });
+      const token = generateToken({ userId: existingUser._id });
+      return res.status(200).json({ message: "Login Successful", token });
     }
   } catch (error) {
     console.error(error);
@@ -88,7 +92,27 @@ export const login = async (req, res, next) => {
   }
 };
 
-export const getUserById = async (req, res, next) => {
+export const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  const token = authHeader && authHeader.split(" ")[1];
+
+  if (!token) {
+    return res.sendStatus(401); // Unauthorized
+  }
+
+  const decodedToken = verifyToken(token);
+
+  if (!decodedToken) {
+    return res.sendStatus(403); // Forbidden
+  }
+
+  // Attach the decoded user data to the request object
+  req.user = decodedToken;
+
+  next();
+};
+
+export const getUserData = async (req, res, next) => {
   const userId = req.params.id;
   console.log("Fetching user with ID:", userId);
 

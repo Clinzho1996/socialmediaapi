@@ -1,7 +1,8 @@
 import express from "express";
 import {
+  authenticateToken,
   getAllUsers,
-  getUserById,
+  getUserData,
   login,
   signup,
   updateImage,
@@ -15,7 +16,7 @@ const router = express.Router();
 
 router.get("/", getAllUsers);
 router.post("/register", signup);
-router.get("/account/:id", getUserById);
+router.get("/account/:id", authenticateToken, getUserData);
 router.post("/login", login);
 router.patch("/register/:_id/upload", upload.single("image"), updateImage);
 
